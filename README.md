@@ -41,4 +41,4 @@ The system is designed with a minimal UI, light color theme, and an easy-to-use 
 
 ## Demo
 
-<video src="demo.mov" controls width="700"></video>
+<video src="demo.mp4" controls width="700"></video>
