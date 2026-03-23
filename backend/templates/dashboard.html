@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f2f4f8;
+    padding:20px;
+}
+
+
+/* top bar */
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+
+.addbtn{
+    background:#4CAF50;
+    color:white;
+    padding:8px 15px;
+    text-decoration:none;
+    border-radius:6px;
+}
+
+
+/* box */
+
+.box{
+    background:#ffffff;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    border:1px solid #e0e0e0;
+}
+
+
+.left{
+    display:flex;
+    gap:10px;
+}
+
+
+.short{
+    font-weight:bold;
+    color:#2962ff;
+    text-decoration:none;
+}
+
+
+.short:hover{
+    text-decoration:underline;
+}
+
+
+.delete{
+    color:red;
+    text-decoration:none;
+    margin-left:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="top">
+
+<h2>Dashboard</h2>
+
+<a href="/create/" class="addbtn">
+
++ Add URL
+
+</a>
+
+</div>
+
+
+
+{% for url in urls %}
+
+<div class="box">
+
+
+<div class="left">
+
+<img
+src="https://www.google.com/s2/favicons?domain={{ url.original_url }}"
+width="20"
+height="20">
+
+{{ url.original_url|truncatechars:40 }}
+
+</div>
+
+
+<div>
+
+<a class="short"
+href="/{{ url.short_code }}"
+target="_blank">
+
+bre.ak/{{ url.short_code }}
+
+</a>
+
+
+<a class="delete"
+href="/delete/{{ url.id }}/">
+
+Delete
+
+</a>
+
+</div>
+
+
+</div>
+
+{% endfor %}
+
+
+
+</body>
+</html>

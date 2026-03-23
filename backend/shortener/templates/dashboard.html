@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Bre.ak</title>
+</head>
+<body>
+    <h2>Welcome to Bre.ak</h2>
+
+    <form id="shortenForm">
+        <input type="text" name="url" placeholder="Enter URL" required>
+        <input type="text" name="alias" placeholder="Custom alias (optional)">
+        <input type="number" name="minutes" placeholder="Expiry in minutes (optional)">
+        <button type="submit">Generate Short URL</button>
+    </form>
+
+    <h3>Short URL:</h3>
+    <div id="result"></div>
+
+    <h3>Your URLs:</h3>
+    <ul id="urlList">
+        {% for url in urls %}
+            <li>
+                {{ url.original_url }} → bre.ak/{{ url.short_code }}
+                (Clicks: {{ url.click_count }})
+                {% if url.expiry_time %}- Expires at: {{ url.expiry_time }}{% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        const form = document.getElementById('shortenForm');
+        const urlList = document.getElementById('urlList');
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/shorten/', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if(data.error){
+                document.getElementById('result').innerText = data.error;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <input type="text" value="${data.short_url}" id="shortUrl" readonly>
+                    <button onclick="copyUrl()">Copy</button>
+                `;
+                const li = document.createElement("li");
+                li.innerText = `${formData.get("url")} → ${data.short_url} (Clicks: 0)`;
+                urlList.appendChild(li);
+            }
+        });
+
+        function copyUrl(){
+            const copyText = document.getElementById("shortUrl");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert("Copied: " + copyText.value);
+        }
+    </script>
+</body>
+</html>

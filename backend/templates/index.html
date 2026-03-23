@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>URL Shortener</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f3f4f6;
+    margin:0;
+}
+
+.navbar{
+
+    background:white;
+    padding:15px;
+    box-shadow:0 2px 5px gray;
+    font-size:20px;
+    font-weight:bold;
+
+}
+
+.container{
+
+    width:400px;
+    margin:auto;
+    margin-top:60px;
+
+    background:white;
+    padding:25px;
+
+    border-radius:10px;
+
+    box-shadow:0 0 10px #ccc;
+
+}
+
+input{
+
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+
+    border:1px solid gray;
+    border-radius:5px;
+
+}
+
+button{
+
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+
+    background:#2563eb;
+    color:white;
+
+    border:none;
+    border-radius:5px;
+
+}
+
+button:hover{
+
+    background:#1d4ed8;
+
+}
+
+.result{
+
+    margin-top:15px;
+    color:green;
+    font-weight:bold;
+
+}
+
+.error{
+
+    color:red;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+URL Shortener App
+</div>
+
+<div class="container">
+
+<input id="url" placeholder="Enter URL">
+
+<input id="alias" placeholder="Custom alias (optional)">
+
+<input id="expiry" placeholder="Expiry minutes (optional)">
+
+<button onclick="shorten()">Generate</button>
+
+<p id="error" class="error"></p>
+
+<p id="result" class="result"></p>
+
+<p id="clicks"></p>
+
+<button onclick="copy()">Copy</button>
+
+</div>
+
+
+<script>
+
+let last_url=""
+
+
+function validURL(str){
+
+return str.startsWith("http://") ||
+       str.startsWith("https://")
+
+}
+
+
+function shorten(){
+
+let url=document.getElementById("url").value
+let alias=document.getElementById("alias").value
+let expiry=document.getElementById("expiry").value
+
+document.getElementById("error").innerHTML=""
+
+if(!validURL(url)){
+
+document.getElementById("error").innerHTML=
+"Invalid URL (use http/https)"
+
+return
+
+}
+
+
+fetch("/shorten/",{
+
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/x-www-form-urlencoded"
+},
+
+body:
+"url="+url+
+"&alias="+alias+
+"&expiry="+expiry
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+if(data.error){
+
+document.getElementById("error").innerHTML=
+data.error
+
+return
+
+}
+
+last_url=data.short_url
+
+document.getElementById("result").innerHTML=
+data.short_url
+
+getClicks()
+
+})
+
+}
+
+
+
+function copy(){
+
+navigator.clipboard.writeText(last_url)
+
+alert("Copied!")
+
+}
+
+
+
+function getClicks(){
+
+let code=
+last_url.split("/").pop()
+
+fetch("/analytics/"+code)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("clicks").innerHTML=
+"Clicks: "+data.clicks
+
+})
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Mini Bitly</title>
+    <style>
+        body { font-family: Arial; display:flex; justify-content:center; align-items:center; height:100vh; background:#f5f5f5; }
+        .container { background:white; padding:30px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+        input { margin:10px 0; padding:8px; width:100%; font-size:14px;}
+        button { padding:10px; width:100%; font-size:14px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form method="POST">{% csrf_token %}
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

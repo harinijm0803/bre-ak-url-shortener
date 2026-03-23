@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { width: 80%; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background: #f2f2f2; }
+        a { color: #007BFF; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .create-btn { display: inline-block; padding: 10px 15px; background: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;}
+        img.favicon { width:16px; height:16px; vertical-align:middle; margin-right:5px; }
+    </style>
+</head>
+<body>
+    <h1>Dashboard - {{ request.session.user_name }}</h1>
+    <div class="container">
+        <a class="create-btn" href="{% url 'create' %}">+ Create Link</a>
+
+        {% if urls %}
+        <table>
+            <tr>
+                <th>Original URL</th>
+                <th>Short URL</th>
+                <th>Clicks</th>
+            </tr>
+            {% for url in urls %}
+            <tr>
+                <td>
+                    <img class="favicon" src="https://www.google.com/s2/favicons?domain={{ url.original_url }}">
+                    <a href="{{ url.original_url }}" target="_blank">{{ url.original_url }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'redirect_url' url.short_code %}" target="_blank">
+                        {{ request.build_absolute_uri|slice:"://"|first }}//{{ request.get_host }}/{{ url.short_code }}
+                    </a>
+                </td>
+                <td>{{ url.click_count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No links created yet!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
