@@ -38,3 +38,10 @@ The system is designed with a minimal UI, light color theme, and an easy-to-use 
 4. Click Generate  
 5. Short link will appear in dashboard  
 6. Click bre.ak/XXXXX to open the original website
+
+## Demo
+
+https://github.com/harinijm0803/bre-ak-url-shortener/blob/main/Screen%20Recording%202026-03-23.mov
+
+
+Bre.ak is a simple and clean web-based URL shortener built using Django.
