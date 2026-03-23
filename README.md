@@ -41,4 +41,8 @@ The system is designed with a minimal UI, light color theme, and an easy-to-use 
 
 ## Demo
 
-https://github.com/harinijm0803/bre-ak-url-shortener/blob/main/demo.mp4
+
+https://github.com/user-attachments/assets/9b628bda-2582-4357-93b6-501135a69c30
+
+
+
